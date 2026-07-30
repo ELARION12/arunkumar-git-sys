@@ -679,6 +679,7 @@ a {
 .matrix-container {
   margin-top: 48px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .matrix-table {
@@ -817,6 +818,7 @@ a {
   margin-bottom: 24px;
   overflow-x: auto;
   padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .arch-tab {
@@ -959,10 +961,6 @@ a {
   grid-template-columns: repeat(auto-fill, minmax(clamp(280px, 28vw, 380px), 1fr));
   gap: clamp(16px, 2vw, 24px);
   align-items: flex-start;
-}
-
-@media (max-width: 480px) {
-  .projects-grid { grid-template-columns: 1fr; }
 }
 
 .project-card {
@@ -1366,13 +1364,149 @@ footer {
   color: var(--text-dim);
 }
 
-/* Mobile Responsiveness */
+/* Mobile & Small Screen Responsive Optimizations */
 @media (max-width: 768px) {
-  .nav-links { display: none; }
-  .mobile-toggle { display: block; }
-  .hero-section { padding-top: 120px; }
-  .ironagent-card { padding: 24px; }
-  .timeline-list { padding-left: 28px; }
-  .timeline-dot { left: -28px; }
-  .timeline-list::before { left: -22px; }
+  .nav-links {
+    display: none;
+  }
+  
+  .nav-links.active {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(5, 8, 14, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-subtle);
+    gap: 18px;
+    align-items: flex-start;
+    z-index: 99;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .hero-section {
+    padding-top: 110px;
+    padding-bottom: 60px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.0rem, 7.5vw, 3.25rem);
+    line-height: 1.15;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ironagent-card {
+    padding: 20px 16px;
+  }
+
+  .ironagent-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .matrix-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 28px;
+  }
+
+  .matrix-table th, .matrix-table td {
+    padding: 10px 12px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .timeline-list {
+    padding-left: 24px;
+    gap: 24px;
+  }
+
+  .timeline-dot {
+    left: -24px;
+    width: 12px;
+    height: 12px;
+    top: 20px;
+  }
+
+  .timeline-list::before {
+    left: -19px;
+    top: 22px;
+    bottom: 22px;
+  }
+
+  .timeline-card {
+    padding: 20px 16px;
+  }
+
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .timeline-date {
+    align-self: flex-start;
+  }
+
+  .terminal-drawer {
+    width: calc(100vw - 24px);
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .metric-card {
+    padding: 16px 12px;
+  }
+
+  .metric-value {
+    font-size: 1.6rem;
+  }
+
+  .metric-label {
+    font-size: 0.68rem;
+  }
+
+  .metric-sub {
+    font-size: 0.68rem;
+  }
+
+  .projects-grid, .skills-grid, .features-grid, .pipeline-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card, .skill-category-card, .feature-box, .pipeline-step {
+    padding: 20px 16px;
+  }
 }
