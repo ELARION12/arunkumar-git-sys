@@ -1,11 +1,25 @@
 /* ==========================================================================
    Antigravity Main Application Script
-   Full Page Scroll-Driven Parallax, Smooth Anchor Scrolling & Spotlight
+   Dynamic Resolution Adjuster, Parallax & Spotlight Engine
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // 1. Smooth Navigation Anchor Scrolling with Dynamic Header Offset
+  // 1. Dynamic Resolution & Viewport DPI Adjuster
+  (function initDynamicResolution() {
+    function adjustResolution() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+      const dpr = window.devicePixelRatio || 1;
+      document.documentElement.style.setProperty('--dpr', `${dpr}`);
+    }
+
+    window.addEventListener('resize', adjustResolution);
+    adjustResolution();
+  })();
+
+  // 2. Smooth Navigation Anchor Scrolling with Dynamic Header Offset
   (function initSmoothScroll() {
     const anchors = document.querySelectorAll('a[href^="#"]');
     anchors.forEach(anchor => {
@@ -29,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  // 2. Full Page Scroll-Driven Parallax & Blur Background Controller
+  // 3. Full Page Scroll-Driven Parallax & Blur Background Controller
   (function initScrollBackground() {
     let bgWrapper = document.querySelector('.global-bg-wrapper');
     if (!bgWrapper) {
@@ -72,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     onScroll();
   })();
 
-  // 3. Interactive Background Canvas Particle Mesh
+  // 4. Interactive Background Canvas Particle Mesh with Resolution Adaptation
   (function initCanvasMesh() {
     if (document.getElementById('bgCanvas')) return;
 
@@ -169,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
   })();
 
-  // 4. Mouse Spotlight Tracking on All Engineering Cards
+  // 5. Mouse Spotlight Tracking on All Engineering Cards
   const spotlightCards = document.querySelectorAll('.metric-card, .philosophy-card, .ironagent-card, .feature-box, .pipeline-step, .project-card, .skill-category-card, .timeline-card');
   spotlightCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -181,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. Scroll-Reveal Intersection Observer
+  // 6. Scroll-Reveal Intersection Observer
   (function initScrollReveal() {
     const revealElements = document.querySelectorAll('section, .metric-card, .philosophy-card, .feature-box, .project-card, .pipeline-step, .timeline-card');
     revealElements.forEach(el => el.classList.add('reveal-on-scroll'));
@@ -197,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => observer.observe(el));
   })();
 
-  // 6. Mobile Navigation Toggle & Auto-Close
+  // 7. Mobile Navigation Toggle & Auto-Close
   const mobileToggle = document.getElementById('mobileToggle');
   const navLinks = document.getElementById('navLinks');
 
@@ -213,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 7. Project Category Filtering
+  // 8. Project Category Filtering
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
 
@@ -237,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 8. Active Navbar Highlight Tracking
+  // 9. Active Navbar Highlight Tracking
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-links a');
 
