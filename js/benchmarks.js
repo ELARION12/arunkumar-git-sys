@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Interactive Benchmarks Visualizer Engine for IronAgent v1.3.0
+   Interactive Benchmarks Visualizer Engine for IronAgent
    ========================================================================== */
 
 const benchmarkData = {
@@ -7,7 +7,7 @@ const benchmarkData = {
     title: "Hot-Loop State Machine Throughput",
     unit: "iterations/sec (Higher is Better)",
     items: [
-      { name: "IronAgent v1.3.0 (C11/C++17 Core)", value: 272487, display: "272,487 ops/s", fillClass: "ironagent", widthPct: 100 },
+      { name: "IronAgent (C11/C++17 Core)", value: 272487, display: "272,487 ops/s", fillClass: "ironagent", widthPct: 100 },
       { name: "OpenAI Agents SDK (Python)", value: 6200, display: "6,200 ops/s", fillClass: "competitor", widthPct: 5 },
       { name: "AutoGen (Python Async)", value: 5120, display: "5,120 ops/s", fillClass: "competitor", widthPct: 4 },
       { name: "CrewAI Engine (Pydantic)", value: 3800, display: "3,800 ops/s", fillClass: "competitor", widthPct: 3 },
@@ -19,7 +19,7 @@ const benchmarkData = {
     title: "50,000 Context Steps Execution Time",
     unit: "Seconds (Lower is Better)",
     items: [
-      { name: "IronAgent v1.3.0 (O(1) Context Window)", value: 0.183, display: "0.183s", fillClass: "ironagent", widthPct: 3 },
+      { name: "IronAgent (O(1) Context Window)", value: 0.183, display: "0.183s", fillClass: "ironagent", widthPct: 3 },
       { name: "OpenAI Agents SDK", value: 6.8, display: "6.80s", fillClass: "competitor", widthPct: 37 },
       { name: "AutoGen Context Sliding", value: 8.4, display: "8.40s", fillClass: "competitor", widthPct: 46 },
       { name: "CrewAI Validation Engine", value: 12.5, display: "12.50s", fillClass: "competitor", widthPct: 68 },
@@ -31,7 +31,7 @@ const benchmarkData = {
     title: "Memory Footprint (RSS)",
     unit: "Megabytes (Lower is Better)",
     items: [
-      { name: "IronAgent v1.3.0 (32-byte Bump Arena)", value: 14.0, display: "14.0 MB", fillClass: "ironagent", widthPct: 4 },
+      { name: "IronAgent (32-byte Bump Arena)", value: 14.0, display: "14.0 MB", fillClass: "ironagent", widthPct: 4 },
       { name: "OpenAI Agents SDK Base", value: 140.0, display: "140.0 MB", fillClass: "competitor", widthPct: 38 },
       { name: "AutoGen Swarm Agent", value: 185.0, display: "185.0 MB", fillClass: "competitor", widthPct: 50 },
       { name: "CrewAI Memory Base", value: 240.0, display: "240.0 MB", fillClass: "competitor", widthPct: 65 },

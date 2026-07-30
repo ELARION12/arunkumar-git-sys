@@ -251,13 +251,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 9. Active Navbar Highlight Tracking
+  // 9. Active Navbar Highlight Tracking & Scroll Elevation
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-links a');
+  const navbar = document.getElementById('navbar');
 
   window.addEventListener('scroll', () => {
     let current = '';
     const scrollY = window.pageYOffset;
+
+    if (navbar) {
+      if (scrollY > 30) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
 
     sections.forEach(section => {
       const sectionHeight = section.offsetHeight;
