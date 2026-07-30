@@ -1442,6 +1442,63 @@ footer {
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 12px;
+}
+
+.social-links .btn {
+  height: 44px;
+  padding: 0 22px;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.social-links .btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Unique Platform Colors */
+.btn-email {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.btn-email:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  border-color: #ef4444;
+  box-shadow: 0 6px 22px rgba(239, 68, 68, 0.45);
+  transform: translateY(-3px);
+}
+
+.btn-github {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f0f6fc;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.btn-github:hover {
+  background: linear-gradient(135deg, #24292e, #161b22);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 6px 22px rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.btn-linkedin {
+  background: rgba(10, 102, 194, 0.14);
+  color: #38bdf8;
+  border: 1px solid rgba(10, 102, 194, 0.45);
+}
+
+.btn-linkedin:hover {
+  background: linear-gradient(135deg, #0a66c2, #004182);
+  color: #ffffff;
+  border-color: #0a66c2;
+  box-shadow: 0 6px 22px rgba(10, 102, 194, 0.55);
+  transform: translateY(-3px);
 }
 
 .copyright {
