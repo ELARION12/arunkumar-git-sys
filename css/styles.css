@@ -1719,12 +1719,12 @@ footer {
   }
 
   .hero-section {
-    padding-top: 110px;
-    padding-bottom: 60px;
+    padding-top: 100px;
+    padding-bottom: 50px;
   }
 
   .hero-title {
-    font-size: clamp(2.0rem, 7.5vw, 3.25rem);
+    font-size: clamp(1.85rem, 6.5vw, 3.0rem);
     line-height: 1.15;
   }
 
@@ -1743,6 +1743,8 @@ footer {
   .hero-actions .btn {
     width: 100%;
     justify-content: center;
+    height: 44px;
+    font-size: 0.9rem;
   }
 
   .ironagent-card {
@@ -1758,7 +1760,7 @@ footer {
   .matrix-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin-top: 28px;
+    margin-top: 24px;
   }
 
   .matrix-table th, .matrix-table td {
@@ -1806,26 +1808,97 @@ footer {
   }
 }
 
+@media (max-width: 768px) {
+  /* Ultra-smooth mobile GPU rendering: disable heavy blur backdrop-filters on scrollable cards */
+  .navbar,
+  .mobile-drawer,
+  .metric-card,
+  .philosophy-card,
+  .ironagent-card,
+  .feature-box,
+  .pipeline-step,
+  .project-card,
+  .skill-category-card,
+  .timeline-card,
+  .bench-container,
+  .arch-overview-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(10, 12, 18, 0.95) !important;
+  }
+
+  .global-bg-image {
+    filter: opacity(0.25) !important;
+  }
+
+  .arch-tabs {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+
+  .arch-tab {
+    flex: 0 0 auto;
+    min-width: 140px;
+    font-size: 0.75rem;
+    padding: 8px 14px;
+  }
+
+  .bench-selector, .filter-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+
+  .bench-btn, .filter-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .footer-content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .social-links .btn {
+    flex: 1 1 auto;
+    min-width: 110px;
+  }
+}
+
 @media (max-width: 480px) {
   .metrics-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .metric-card {
-    padding: 16px 12px;
+    padding: 14px 10px;
+    min-height: 94px;
   }
 
   .metric-value {
-    font-size: 1.6rem;
+    font-size: clamp(1.35rem, 5.5vw, 1.75rem);
+    margin-bottom: 4px;
   }
 
   .metric-label {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
+    line-height: 1.2;
   }
 
   .metric-sub {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
+    line-height: 1.2;
   }
 
   .projects-grid, .skills-grid, .features-grid, .pipeline-flow {
@@ -1833,7 +1906,7 @@ footer {
   }
 
   .project-card, .skill-category-card, .feature-box, .pipeline-step {
-    padding: 20px 16px;
+    padding: 18px 14px;
   }
 }
 

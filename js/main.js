@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!bgImg) return;
 
     let ticking = false;
+    const isTouchMobile = window.innerWidth <= 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     function onScroll() {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -66,11 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const scale = 1.0 + scrollFraction * 0.15;
       const translateY = scrollFraction * 100;
       const opacity = 0.24 - scrollFraction * 0.12;
-      const blur = scrollFraction * 5;
 
       bgImg.style.transform = `scale(${scale}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
       bgImg.style.opacity = opacity.toFixed(3);
-      bgImg.style.filter = `saturate(1.2) contrast(1.1) blur(${blur.toFixed(1)}px)`;
+
+      if (!isTouchMobile) {
+        const blur = scrollFraction * 5;
+        bgImg.style.filter = `saturate(1.2) contrast(1.1) blur(${blur.toFixed(1)}px)`;
+      }
 
       ticking = false;
     }
@@ -88,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Interactive High-DPI Canvas Particle Mesh with Micro-Optimized Math
   (function initCanvasMesh() {
     if (document.getElementById('bgCanvas')) return;
+    if (window.innerWidth <= 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
 
     const canvas = document.createElement('canvas');
     canvas.id = 'bgCanvas';
@@ -203,32 +208,34 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // 5. Zero-Reflow Mouse Spotlight Tracking with Rect Caching & RAF Throttle
-  const spotlightCards = document.querySelectorAll('.metric-card, .philosophy-card, .ironagent-card, .feature-box, .pipeline-step, .project-card, .skill-category-card, .timeline-card');
-  
-  spotlightCards.forEach(card => {
-    let rect = null;
-    let rafId = null;
+  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    const spotlightCards = document.querySelectorAll('.metric-card, .philosophy-card, .ironagent-card, .feature-box, .pipeline-step, .project-card, .skill-category-card, .timeline-card');
+    
+    spotlightCards.forEach(card => {
+      let rect = null;
+      let rafId = null;
 
-    function updateRect() {
-      rect = card.getBoundingClientRect();
-    }
+      function updateRect() {
+        rect = card.getBoundingClientRect();
+      }
 
-    card.addEventListener('mouseenter', updateRect, { passive: true });
+      card.addEventListener('mouseenter', updateRect, { passive: true });
 
-    card.addEventListener('mousemove', (e) => {
-      if (!rect) updateRect();
+      card.addEventListener('mousemove', (e) => {
+        if (!rect) updateRect();
 
-      if (rafId) return;
+        if (rafId) return;
 
-      rafId = requestAnimationFrame(() => {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-        rafId = null;
-      });
-    }, { passive: true });
-  });
+        rafId = requestAnimationFrame(() => {
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+          rafId = null;
+        });
+      }, { passive: true });
+    });
+  }
 
   // 6. Scroll-Reveal Intersection Observer
   (function initScrollReveal() {
@@ -434,6 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 11. Interactive Word Cursor Pointing & Color Change Engine (All words outside containers)
   (function initWordHoverEffect() {
+    if (window.innerWidth <= 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
     const candidateSelectors = [
       '.hero-title',
       '.hero-subtitle',
