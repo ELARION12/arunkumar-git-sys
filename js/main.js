@@ -1,6 +1,6 @@
 /* ==========================================================================
    Antigravity Main Application Script
-   Dynamic Resolution Adjuster, Parallax & Spotlight Engine
+   High-Performance Rendering, Dynamic Resolution & Spotlight Engine
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.style.setProperty('--dpr', `${dpr}`);
     }
 
-    window.addEventListener('resize', adjustResolution);
+    window.addEventListener('resize', adjustResolution, { passive: true });
     adjustResolution();
   })();
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetEl = document.querySelector(targetId);
         if (targetEl) {
           e.preventDefault();
-          const headerOffset = 80;
+          const headerOffset = 76;
           const elementPosition = targetEl.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  // 3. Full Page Scroll-Driven Parallax & Blur Background Controller
+  // 3. Full Page Scroll-Driven Parallax & Blur Background Controller (GPU Accelerated)
   (function initScrollBackground() {
     let bgWrapper = document.querySelector('.global-bg-wrapper');
     if (!bgWrapper) {
@@ -63,13 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
       const scrollFraction = Math.min(Math.max(scrollY / maxScroll, 0), 1);
 
-      // Dynamic scale (1.0 to 1.18), translateY (0 to 120px), opacity (0.24 to 0.12), and blur (0 to 6px)
-      const scale = 1.0 + scrollFraction * 0.18;
-      const translateY = scrollFraction * 120;
+      const scale = 1.0 + scrollFraction * 0.15;
+      const translateY = scrollFraction * 100;
       const opacity = 0.24 - scrollFraction * 0.12;
-      const blur = scrollFraction * 6;
+      const blur = scrollFraction * 5;
 
-      bgImg.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+      bgImg.style.transform = `scale(${scale}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
       bgImg.style.opacity = opacity.toFixed(3);
       bgImg.style.filter = `saturate(1.2) contrast(1.1) blur(${blur.toFixed(1)}px)`;
 
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     onScroll();
   })();
 
-  // 4. Interactive Background Canvas Particle Mesh with Resolution Adaptation
+  // 4. Interactive High-DPI Canvas Particle Mesh with Micro-Optimized Math
   (function initCanvasMesh() {
     if (document.getElementById('bgCanvas')) return;
 
@@ -94,32 +93,47 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.id = 'bgCanvas';
     document.body.prepend(canvas);
 
-    const ctx = canvas.getContext('2d');
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let width = 0;
+    let height = 0;
+    let dpr = window.devicePixelRatio || 1;
+
+    function resizeCanvas() {
+      dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
 
     let particles = [];
-    const particleCount = Math.min(Math.floor(window.innerWidth / 18), 75);
-    const mouse = { x: null, y: null, radius: 200 };
+    const particleCount = Math.min(Math.floor(window.innerWidth / 20), 65);
+    const mouse = { x: null, y: null, radius: 180, radiusSq: 32400 };
 
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-    });
+    }, { passive: true });
 
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    }, { passive: true });
 
     class Particle {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.45;
-        this.vy = (Math.random() - 0.5) * 0.45;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
         this.radius = Math.random() * 1.5 + 1;
-        this.alpha = Math.random() * 0.5 + 0.2;
+        this.alpha = Math.random() * 0.45 + 0.2;
       }
 
       update() {
@@ -129,15 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.x < 0 || this.x > width) this.vx *= -1;
         if (this.y < 0 || this.y > height) this.vy *= -1;
 
-        if (mouse.x && mouse.y) {
+        if (mouse.x !== null && mouse.y !== null) {
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < mouse.radius) {
+          const distSq = dx * dx + dy * dy;
+          if (distSq < mouse.radiusSq && distSq > 0) {
+            const dist = Math.sqrt(distSq);
             const angle = Math.atan2(dy, dx);
             const force = (mouse.radius - dist) / mouse.radius;
-            this.x -= Math.cos(angle) * force * 1.6;
-            this.y -= Math.sin(angle) * force * 1.6;
+            this.x -= Math.cos(angle) * force * 1.5;
+            this.y -= Math.sin(angle) * force * 1.5;
           }
         }
       }
@@ -154,6 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
       particles.push(new Particle());
     }
 
+    const maxDist = 130;
+    const maxDistSq = 16900;
+
     function animate() {
       ctx.clearRect(0, 0, width, height);
 
@@ -164,13 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < 130) {
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${0.16 * (1 - dist / 130)})`;
+            ctx.strokeStyle = `rgba(56, 189, 248, ${0.16 * (1 - dist / maxDist)})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }
@@ -183,16 +202,32 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
   })();
 
-  // 5. Mouse Spotlight Tracking on All Engineering Cards
+  // 5. Zero-Reflow Mouse Spotlight Tracking with Rect Caching & RAF Throttle
   const spotlightCards = document.querySelectorAll('.metric-card, .philosophy-card, .ironagent-card, .feature-box, .pipeline-step, .project-card, .skill-category-card, .timeline-card');
+  
   spotlightCards.forEach(card => {
+    let rect = null;
+    let rafId = null;
+
+    function updateRect() {
+      rect = card.getBoundingClientRect();
+    }
+
+    card.addEventListener('mouseenter', updateRect, { passive: true });
+
     card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-    });
+      if (!rect) updateRect();
+
+      if (rafId) return;
+
+      rafId = requestAnimationFrame(() => {
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+        rafId = null;
+      });
+    }, { passive: true });
   });
 
   // 6. Scroll-Reveal Intersection Observer
@@ -206,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
           entry.target.classList.add('reveal-visible');
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
 
     revealElements.forEach(el => observer.observe(el));
   })();
@@ -255,9 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-links a');
   const navbar = document.getElementById('navbar');
+  let navTicking = false;
 
-  window.addEventListener('scroll', () => {
-    let current = '';
+  function updateNav() {
     const scrollY = window.pageYOffset;
 
     if (navbar) {
@@ -268,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    let current = '';
     sections.forEach(section => {
       const sectionHeight = section.offsetHeight;
       const sectionTop = section.offsetTop - 110;
@@ -282,5 +318,14 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.add('active');
       }
     });
+
+    navTicking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!navTicking) {
+      requestAnimationFrame(updateNav);
+      navTicking = true;
+    }
   }, { passive: true });
 });
