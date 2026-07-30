@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!bgWrapper) {
       bgWrapper = document.createElement('div');
       bgWrapper.className = 'global-bg-wrapper';
-      bgWrapper.innerHTML = `<img src="assets/hero_bg.jpg" alt="Systems Architecture Background" class="global-bg-image" id="globalBgImg" />`;
+      bgWrapper.innerHTML = `<img src="assets/cyber_matrix_flow.gif" alt="Tokyo Night Synth Cyber Background" class="global-bg-image" id="globalBgImg" />`;
       document.body.prepend(bgWrapper);
     }
 
@@ -246,21 +246,68 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => observer.observe(el));
   })();
 
-  // 7. Mobile Navigation Toggle & Auto-Close
+  // 7. Mobile Navigation Slide-Out Drawer & Backdrop Overlay Controller
   const mobileToggle = document.getElementById('mobileToggle');
-  const navLinks = document.getElementById('navLinks');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const mobileDrawerClose = document.getElementById('mobileDrawerClose');
+  const mobileNavLinks = document.querySelectorAll('#mobileNavLinks a');
 
-  if (mobileToggle && navLinks) {
-    mobileToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
+  function openMobileDrawer() {
+    if (mobileToggle) {
+      mobileToggle.classList.add('active');
+      mobileToggle.setAttribute('aria-expanded', 'true');
+    }
+    if (mobileOverlay) {
+      mobileOverlay.classList.add('active');
+      mobileOverlay.setAttribute('aria-hidden', 'false');
+    }
+    if (mobileDrawer) {
+      mobileDrawer.classList.add('active');
+      mobileDrawer.setAttribute('aria-hidden', 'false');
+    }
+    document.body.style.overflow = 'hidden';
+  }
 
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-      });
+  function closeMobileDrawer() {
+    if (mobileToggle) {
+      mobileToggle.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (mobileOverlay) {
+      mobileOverlay.classList.remove('active');
+      mobileOverlay.setAttribute('aria-hidden', 'true');
+    }
+    if (mobileDrawer) {
+      mobileDrawer.classList.remove('active');
+      mobileDrawer.setAttribute('aria-hidden', 'true');
+    }
+    document.body.style.overflow = '';
+  }
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mobileDrawer && mobileDrawer.classList.contains('active');
+      if (isOpen) {
+        closeMobileDrawer();
+      } else {
+        openMobileDrawer();
+      }
     });
   }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener('click', closeMobileDrawer);
+  }
+
+  if (mobileDrawerClose) {
+    mobileDrawerClose.addEventListener('click', closeMobileDrawer);
+  }
+
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', closeMobileDrawer);
+  });
 
   // 8. Project Category Filtering
   const filterBtns = document.querySelectorAll('.filter-btn');
@@ -288,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 9. Active Navbar Highlight Tracking & Scroll Elevation
   const sections = document.querySelectorAll('section[id]');
-  const navItems = document.querySelectorAll('.nav-links a');
+  const allNavLinks = document.querySelectorAll('.nav-links a, .mobile-nav-links a');
   const navbar = document.getElementById('navbar');
   let navTicking = false;
 
@@ -312,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    navItems.forEach(item => {
+    allNavLinks.forEach(item => {
       item.classList.remove('active');
       if (item.getAttribute('href') === `#${current}`) {
         item.classList.add('active');
@@ -328,4 +375,146 @@ document.addEventListener('DOMContentLoaded', () => {
       navTicking = true;
     }
   }, { passive: true });
+
+  // 10. High-Tech Cyber Cursor Trail & Glow Interaction Engine
+  (function initCustomCursor() {
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
+    const dot = document.createElement('div');
+    dot.className = 'custom-cursor-dot';
+    const ring = document.createElement('div');
+    ring.className = 'custom-cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+    }, { passive: true });
+
+    function renderCursor() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.transform = `translate3d(${ringX.toFixed(2)}px, ${ringY.toFixed(2)}px, 0)`;
+      requestAnimationFrame(renderCursor);
+    }
+    requestAnimationFrame(renderCursor);
+
+    // Hover effect over interactive elements
+    const updateInteractables = () => {
+      const interactables = document.querySelectorAll('a, button, .btn, .card, .project-card, .metric-card, .philosophy-card, .skill-category-card, input');
+      interactables.forEach(el => {
+        if (el.dataset.cursorBound) return;
+        el.dataset.cursorBound = "true";
+        el.addEventListener('mouseenter', () => {
+          ring.classList.add('hovering');
+          dot.classList.add('hovering');
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.classList.remove('hovering');
+          dot.classList.remove('hovering');
+        });
+      });
+    };
+
+    updateInteractables();
+
+    // Click pulse effect
+    window.addEventListener('mousedown', () => {
+      ring.classList.add('clicking');
+    });
+    window.addEventListener('mouseup', () => {
+      ring.classList.remove('clicking');
+    });
+  })();
+
+  // 11. Interactive Word Cursor Pointing & Color Change Engine (All words outside containers)
+  (function initWordHoverEffect() {
+    const candidateSelectors = [
+      '.hero-title',
+      '.hero-subtitle',
+      '.status-pill',
+      '.section-tag',
+      '.section-title',
+      '.section-desc',
+      'section > .container > p',
+      'section > .container > div > p',
+      'footer h2',
+      'footer p',
+      '.copyright',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'
+    ];
+
+    const containerSelector = [
+      '.metric-card',
+      '.philosophy-card',
+      '.ironagent-card',
+      '.feature-box',
+      '.matrix-container',
+      '.bench-container',
+      '.project-card',
+      '.skill-category-card',
+      '.skill-card',
+      '.timeline-card',
+      '.timeline-item',
+      '.arch-overview-card',
+      '.pipeline-step',
+      '.terminal-drawer',
+      '.navbar',
+      '.mobile-drawer',
+      '.btn',
+      'button',
+      'input',
+      'table',
+      'code',
+      'pre'
+    ].join(', ');
+
+    candidateSelectors.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(el => {
+        // Skip elements inside container cards / boxes
+        if (el.closest(containerSelector)) return;
+        if (el.dataset.wordWrapped) return;
+        el.dataset.wordWrapped = "true";
+
+        const processNode = (node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            if (!text.trim()) return;
+
+            const fragment = document.createDocumentFragment();
+            const words = text.split(/(\s+)/);
+
+            words.forEach(word => {
+              if (/\s+/.test(word) || !word) {
+                fragment.appendChild(document.createTextNode(word));
+              } else {
+                const span = document.createElement('span');
+                span.className = 'word-hover';
+                span.textContent = word;
+                fragment.appendChild(span);
+              }
+            });
+
+            node.parentNode.replaceChild(fragment, node);
+          } else if (
+            node.nodeType === Node.ELEMENT_NODE &&
+            !node.classList.contains('word-hover') &&
+            node.tagName !== 'SCRIPT' &&
+            node.tagName !== 'STYLE' &&
+            node.tagName !== 'SVG'
+          ) {
+            Array.from(node.childNodes).forEach(processNode);
+          }
+        };
+
+        Array.from(el.childNodes).forEach(processNode);
+      });
+    });
+  })();
 });
