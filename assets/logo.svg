@@ -52,7 +52,7 @@
   </g>
 
   <!-- Title -->
-  <text x="640" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="56" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="6">IRONAGENT</text>
+  <text x="640" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="56" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="6">CERBERUS AI</text>
   
   <!-- Subtitle -->
   <text x="640" y="245" font-family="monospace" font-size="18" font-weight="500" fill="#8B949E" text-anchor="middle" letter-spacing="4">THE BARE-METAL AI ORCHESTRATOR</text>

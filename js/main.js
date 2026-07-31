@@ -71,11 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
       bgImg.style.transform = `scale(${scale}) translate3d(0, ${translateY.toFixed(1)}px, 0)`;
       bgImg.style.opacity = opacity.toFixed(3);
 
-      if (!isTouchMobile) {
-        const blur = scrollFraction * 5;
-        bgImg.style.filter = `saturate(1.2) contrast(1.1) blur(${blur.toFixed(1)}px)`;
-      }
-
       ticking = false;
     }
 
@@ -209,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Zero-Reflow Mouse Spotlight Tracking with Rect Caching & RAF Throttle
   if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-    const spotlightCards = document.querySelectorAll('.metric-card, .philosophy-card, .ironagent-card, .feature-box, .pipeline-step, .project-card, .skill-category-card, .timeline-card');
+    const spotlightCards = document.querySelectorAll('.metric-card, .philosophy-card, .cerberus-card, .ironagent-card, .feature-box, .pipeline-step, .project-card, .skill-category-card, .timeline-card');
     
     spotlightCards.forEach(card => {
       let rect = null;
@@ -383,61 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  // 10. High-Tech Cyber Cursor Trail & Glow Interaction Engine
-  (function initCustomCursor() {
-    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
 
-    const dot = document.createElement('div');
-    dot.className = 'custom-cursor-dot';
-    const ring = document.createElement('div');
-    ring.className = 'custom-cursor-ring';
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-
-    let mouseX = -100, mouseY = -100;
-    let ringX = -100, ringY = -100;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-    }, { passive: true });
-
-    function renderCursor() {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      ring.style.transform = `translate3d(${ringX.toFixed(2)}px, ${ringY.toFixed(2)}px, 0)`;
-      requestAnimationFrame(renderCursor);
-    }
-    requestAnimationFrame(renderCursor);
-
-    // Hover effect over interactive elements
-    const updateInteractables = () => {
-      const interactables = document.querySelectorAll('a, button, .btn, .card, .project-card, .metric-card, .philosophy-card, .skill-category-card, input');
-      interactables.forEach(el => {
-        if (el.dataset.cursorBound) return;
-        el.dataset.cursorBound = "true";
-        el.addEventListener('mouseenter', () => {
-          ring.classList.add('hovering');
-          dot.classList.add('hovering');
-        });
-        el.addEventListener('mouseleave', () => {
-          ring.classList.remove('hovering');
-          dot.classList.remove('hovering');
-        });
-      });
-    };
-
-    updateInteractables();
-
-    // Click pulse effect
-    window.addEventListener('mousedown', () => {
-      ring.classList.add('clicking');
-    });
-    window.addEventListener('mouseup', () => {
-      ring.classList.remove('clicking');
-    });
-  })();
 
   // 11. Interactive Word Cursor Pointing & Color Change Engine (All words outside containers)
   (function initWordHoverEffect() {
@@ -448,19 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
       '.hero-subtitle',
       '.status-pill',
       '.section-tag',
-      '.section-title',
-      '.section-desc',
-      'section > .container > p',
-      'section > .container > div > p',
-      'footer h2',
-      'footer p',
-      '.copyright',
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'
+      '.section-title'
     ];
 
     const containerSelector = [
       '.metric-card',
       '.philosophy-card',
+      '.cerberus-card',
       '.ironagent-card',
       '.feature-box',
       '.matrix-container',
